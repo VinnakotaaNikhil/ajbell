@@ -3,8 +3,7 @@
   "image": "mcr.microsoft.com/devcontainers/python:3.12",
   "features": {
     "ghcr.io/devcontainers/features/node:1": {},
-    "ghcr.io/devcontainers/features/aws-cli:1": {},
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+    "ghcr.io/devcontainers/features/aws-cli:1": {}
   },
   "postCreateCommand": "pip install --upgrade pip && pip install dbt-core dbt-postgres dbt-duckdb && npm install -g aws-cdk",
   "customizations": {
@@ -12,8 +11,7 @@
       "extensions": [
         "ms-python.python",
         "innoverio.vscode-dbt-power-user",
-        "amazonwebservices.aws-toolkit-vscode",
-        "ms-azuretools.vscode-docker"
+        "amazonwebservices.aws-toolkit-vscode"
       ]
     }
   }
