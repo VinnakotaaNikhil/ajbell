@@ -6,3 +6,5 @@ __pycache__/
 ajbell_dw/target/
 ajbell_dw/dbt_packages/
 ajbell_dw/logs/
+ajbell_dw/profiles.yml
+logs/
