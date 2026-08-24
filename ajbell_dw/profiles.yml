@@ -1,0 +1,7 @@
+ajbell_dw:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: ../data/source.duckdb
+      threads: 4

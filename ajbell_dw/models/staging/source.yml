@@ -1,0 +1,15 @@
+version: 2
+
+# Declares the raw source tables that live in the DuckDB source system.
+# Referencing them via source('raw', <table>) lets dbt build a lineage graph
+# and lets us swap the underlying source later without touching every model.
+sources:
+  - name: raw                # logical group name we choose; used as source('raw', ...)
+    description: "Raw tables loaded from the source system (DuckDB)"
+    schema: main             # 'main' is DuckDB's default schema where the generator wrote the tables
+    tables:
+      - name: customers
+      - name: customer_history
+      - name: accounts
+      - name: securities
+      - name: trades

@@ -1,0 +1,5 @@
+# Declares external dbt packages this project depends on.
+# dbt_utils is dbt Labs' official helper library - we use it for generate_surrogate_key().
+packages:
+  - package: dbt-labs/dbt_utils
+    version: [">=1.0.0", "<2.0.0"]

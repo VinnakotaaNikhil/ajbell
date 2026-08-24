@@ -3,3 +3,6 @@ data/*.duckdb
 data/*.duckdb.wal
 __pycache__/
 *.pyc
+ajbell_dw/target/
+ajbell_dw/dbt_packages/
+ajbell_dw/logs/

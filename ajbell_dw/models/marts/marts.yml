@@ -1,0 +1,97 @@
+version: 2
+
+# Tests and documentation for the mart layer (the star schema).
+# Each 'tests:' block compiles to a query that returns failing rows;
+# zero rows returned = the test passes.
+models:
+  - name: dim_security
+    description: "Dimension of investable instruments. Grain: one row per security."
+    columns:
+      - name: security_sk
+        description: "Surrogate key (hashed). Uniquely identifies a security."
+        tests:
+          - unique          # no two securities share a surrogate key
+          - not_null        # every row has a key
+      - name: security_bk
+        description: "Business key from the source system."
+        tests:
+          - not_null
+
+  - name: dim_account
+    description: "Dimension of accounts. Grain: one row per account."
+    columns:
+      - name: account_sk
+        description: "Surrogate key (hashed). Uniquely identifies an account."
+        tests:
+          - unique
+          - not_null
+      - name: account_type
+        description: "Product type of the account."
+        tests:
+          - accepted_values:
+              values: ['ISA', 'Pension', 'Dealing']   # only these three are valid
+      - name: account_status
+        tests:
+          - accepted_values:
+              values: ['Active', 'Closed']
+
+  - name: dim_customer
+    description: "SCD Type 2 customer dimension. Grain: one row per customer VERSION."
+    columns:
+      - name: customer_sk
+        description: "Surrogate key per version (hash of customer_id + valid_from)."
+        tests:
+          - unique          # each version is unique
+          - not_null
+      - name: customer_bk
+        description: "Business key. Shared across a customer's versions (so NOT unique here)."
+        tests:
+          - not_null
+      - name: is_current
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+
+  - name: dim_date
+    description: "Calendar dimension. Grain: one row per day."
+    columns:
+      - name: date_sk
+        description: "Integer date key in YYYYMMDD form."
+        tests:
+          - unique
+          - not_null
+
+  - name: fact_trades
+    description: "Fact table of trades. Grain: one row per trade."
+    columns:
+      - name: trade_bk
+        description: "The trade's business key (degenerate dimension)."
+        tests:
+          - unique
+          - not_null
+      - name: account_sk
+        description: "FK to dim_account."
+        tests:
+          - not_null        # no orphaned trades (this automates your manual check)
+          - relationships:
+              to: ref('dim_account')      # every account_sk must exist in dim_account
+              field: account_sk
+      - name: security_sk
+        description: "FK to dim_security."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_security')
+              field: security_sk
+      - name: date_sk
+        description: "FK to dim_date."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_date')
+              field: date_sk
+      - name: trade_type
+        tests:
+          - accepted_values:
+              values: ['BUY', 'SELL']
