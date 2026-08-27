@@ -8,3 +8,4 @@ ajbell_dw/dbt_packages/
 ajbell_dw/logs/
 ajbell_dw/profiles.yml
 logs/
+data/extracts/
