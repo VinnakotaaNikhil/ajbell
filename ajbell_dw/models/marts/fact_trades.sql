@@ -22,7 +22,7 @@ final as(
         -- Foreign keys OUT to the dimensions (surrogate keys) -------------------
         a.account_sk,                                   -- links to dim_account (and via it, the customer)
         s.security_sk,                                  -- links to dim_security
-        cast(strftime(t.trade_date, '%Y%m%d') as integer) as date_sk,  -- links to dim_date (YYYYMMDD)
+        cast(to_char(t.trade_date, 'YYYYMMDD') as integer) as date_sk,  -- links to dim_date (YYYYMMDD)
 
         -- Measures (the numbers you aggregate) ---------------------------------
         t.trade_type,                                   -- BUY / SELL (kept here as it describes the event)

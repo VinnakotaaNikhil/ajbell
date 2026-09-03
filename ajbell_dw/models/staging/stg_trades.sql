@@ -15,6 +15,6 @@ select
     quantity,                              -- number of units traded
     price,                                 -- price per unit at time of trade
     quantity * price as gross_amount,      -- derived: total value of the trade (units x price)
-    trade_timestamp,                       -- full timestamp of the trade
-    cast(trade_timestamp as date) as trade_date  -- date-only, used to join dim_date later
+    to_timestamp(trade_timestamp / 1000000) as trade_timestamp,
+    cast(to_timestamp(trade_timestamp / 1000000) as date) as trade_date  -- date-only, used to join dim_date later
 from source

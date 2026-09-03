@@ -23,16 +23,16 @@ calendar as (
 select
     -- Surrogate key for the date, in clean YYYYMMDD integer form (e.g. 2024-03-15 -> 20240315).
     -- This is the standard date-dimension key; fact tables store this integer.
-    cast(strftime(date_day, '%Y%m%d') as integer) as date_sk,
+    cast(to_char(date_day, 'YYYYMMDD') as integer) as date_sk,
 
     date_day,                                          -- the date itself
     extract(year    from date_day) as year,
     extract(quarter from date_day) as quarter,
     extract(month   from date_day) as month,
-    strftime(date_day, '%B')       as month_name,      -- e.g. "March"
+    to_char(date_day, 'MM')       as month_name,      -- e.g. "March"
     extract(day     from date_day) as day_of_month,
     extract(dow     from date_day) as day_of_week,     -- 0 = Sunday ... 6 = Saturday (DuckDB)
-    strftime(date_day, '%A')       as day_name,        -- e.g. "Friday"
+    initcap(trim(to_char(date_day, 'DAY')))       as day_name,        -- e.g. "Friday"
     case
         when extract(dow from date_day) in (0, 6) then true
         else false
